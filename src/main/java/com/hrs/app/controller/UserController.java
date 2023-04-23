@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hrs.app.model.Appointment;
+import com.hrs.app.model.Favourite;
 import com.hrs.app.model.House;
 import com.hrs.app.model.User;
 import com.hrs.app.service.OwnerService;
+import com.hrs.app.service.OwnerServiceImpl;
 import com.hrs.app.service.UserService;
+import com.hrs.app.service.UserServiceImpl;
 
 @Controller
 public class UserController {
@@ -200,6 +203,47 @@ public class UserController {
         model.addAttribute("houses", houses);
         model.addAttribute("role", userdata.getUsertype());
 		return "user/filter";
+	}
+	
+	@PostMapping("addToFavourites/{id}")
+	public String addToFavourites(@PathVariable(name="id") String id, Model model, HttpSession session) {
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+        model.addAttribute("sessionMessages", messages);
+        User userdata = userService.findUser(messages.get(0));
+        
+        Favourite favourite = new Favourite();
+        
+        favourite.setHouseId(id);
+        favourite.setUserId(userdata.getId().toString());
+        
+        userService.savefavourites(favourite);
+        return "redirect:/user";
+        
+	}
+	
+	@GetMapping("/viewFavourites")
+	public String viewFavourites(Model model, HttpSession session) {
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		List<House> favs = userService.findAllFavs(userdata.getId());
+		model.addAttribute("houses", favs);
+		System.out.println("fffff");
+		
+		return "user/viewfavourites";
+		
 	}
 	
 	
