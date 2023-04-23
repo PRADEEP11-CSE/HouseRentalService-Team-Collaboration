@@ -14,17 +14,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "appointments")
-public class Appointment {
+@Table(name = "favourites")
+public class Favourite {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
 	private String houseId;
 	private String userId;
-	private String visitDate;
-	private String visitTime;
-	private String type;
 
 	
 }
