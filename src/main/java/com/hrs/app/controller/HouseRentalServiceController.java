@@ -22,7 +22,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.hrs.app.model.Email;
 import com.hrs.app.model.User;
 import com.hrs.app.service.MessageService;
+import com.hrs.app.service.MessageServiceImpl;
 import com.hrs.app.service.UserService;
+import com.hrs.app.service.UserServiceImpl;
 
 @Controller
 public class HouseRentalServiceController {
@@ -38,7 +40,7 @@ public class HouseRentalServiceController {
 	}
 
 	@GetMapping("/register")
-	public String getRegister(Model model) {
+	public String register(Model model) {
 
 		User user = new User();
 		model.addAttribute("user", user);
