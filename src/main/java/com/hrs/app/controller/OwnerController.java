@@ -19,7 +19,9 @@ import com.hrs.app.model.Appointment;
 import com.hrs.app.model.House;
 import com.hrs.app.model.User;
 import com.hrs.app.service.OwnerService;
+import com.hrs.app.service.OwnerServiceImpl;
 import com.hrs.app.service.UserService;
+import com.hrs.app.service.UserServiceImpl;
 
 
 @Controller
@@ -164,7 +166,7 @@ public class OwnerController {
 		User userdata = userService.findUser(messages.get(0));
 		
 		
-		
+		house.setHouseOwnerMail(userdata.getEmail());
 		ownerService.updateHouse(house);
 		
 		
