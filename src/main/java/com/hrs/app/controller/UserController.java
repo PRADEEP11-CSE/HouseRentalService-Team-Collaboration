@@ -387,6 +387,43 @@ public class UserController {
 	}
 	
 	
+	@GetMapping("/requestMaintenance")
+	public String reportMaintenance(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata =userService.findUser(messages.get(0));
+		List<House> houses = userService.getAllBookedHouseDetails(userdata.getId());
+		model.addAttribute("houses", houses);
+		Maintenance maintenance = new Maintenance();
+		model.addAttribute("maintenance", maintenance);
+		
+
+		return "user/requestmaintenance";
+	}
+	
+	@PostMapping("/saveMaintenance")
+	public String saveMaintenance(@ModelAttribute("maintenance") Maintenance maintenance, Model model, HttpSession session)
+	{
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		System.out.println("reported Owner");
+		
+		maintenance.setUserMail(userdata.getEmail());
+		userService.saveMaintenance(maintenance);
+		
+		return "redirect:/user";
+	}
 	@GetMapping("/reviewProperty")
 	public String reviewProperty(Model model, HttpSession session) {
 		
@@ -419,9 +456,108 @@ public class UserController {
 		return "redirect:/user";
 	}
 	
-}
+	@GetMapping("/raiseComplaint")
+	public String raiseComplaint(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		
+		Complaint complaint = new Complaint();
+		model.addAttribute("complaint", complaint);
+		List<House> houses = userService.getAllHouses();
+		model.addAttribute("houses", houses);
+
+		return "user/raisecomplaint";
+	}
 	
+	@GetMapping("/usernotifications")
+	public String notifications(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		
+		List<Announcement> notifications = userService.getAllAnnouncements();
+		model.addAttribute("notifications", notifications);
+	
+		return "user/viewnotifications";
+	}
+	
+	@PostMapping("/saveComplaint")
+	public String saveComplaint(@ModelAttribute("complaint") Complaint complaint, Model model, HttpSession session)
+	{
+		System.out.println("reported Owner");
+	
+		
+		userService.saveComplaint(complaint);
+		
+		return "redirect:/user";
+	}
+	
+	
+	@GetMapping("/referFriend")
+	public String referFriend(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+	
+		return "user/referfriend";
+	}
 	
 
-	
-	
+	@PostMapping("/refer")
+	public String refer(@RequestParam("email") String email, Model model, HttpSession session)
+	{
+		int output = 0;
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		
+		Coupon coupon = new Coupon();
+		
+		coupon.setCouponTitle("REFERRAL");
+		coupon.setCouponCode("REFERBY"+userdata.getId().toString());
+		coupon.setDiscountAmount("500");
+		
+		Date date = new Date();
+		coupon.setStartDate(date.toString());
+		coupon.setEndDate(date.toString());
+		
+		
+		Email emailmodel = new Email();
+		emailmodel.setMsgBody("You have been referred by "+ userdata.getEmail()+"coupon code is "+ coupon.getCouponCode());
+		emailmodel.setRecipient(email);
+		emailmodel.setSubject("Referral from House Rental Service");
+		
+		adminService.addCoupon(coupon);
+		System.out.println("------------------body"+ emailmodel.getMsgBody()+"======="+ emailmodel.getRecipient());
+		output = messageService.sendSimpleMail(emailmodel);
+		
+		System.out.println("------------------"+ output);
+		if(output !=1) {
+			model.addAttribute("errmsg", "User Email address not found.");
+		}
+		return "redirect:/user";
+	}
+}

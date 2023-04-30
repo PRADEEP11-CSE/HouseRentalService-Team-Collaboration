@@ -2,10 +2,13 @@ package com.hrs.app.service;
 
 import java.util.List;
 
-
+import com.hrs.app.model.Announcement;
 import com.hrs.app.model.Appointment;
+import com.hrs.app.model.Book;
+import com.hrs.app.model.Complaint;
 import com.hrs.app.model.Favourite;
 import com.hrs.app.model.House;
+import com.hrs.app.model.Maintenance;
 import com.hrs.app.model.MessageModel;
 import com.hrs.app.model.ReviewPropertyModel;
 import com.hrs.app.model.User;
@@ -44,9 +47,18 @@ public interface UserService {
 
 	List<MessageModel> findAllMessages(String email);
 
+	List<User> getAllOwners();
+
+	List<House> getAllBookedHouseDetails(Long id);
+
+	Book saveBookHouse(Book book);
+
+	void saveMaintenance(Maintenance maintenance);
 
 	void saveReviewProperty(ReviewPropertyModel property);
 	
 	List<House> getAllHouses();
+
+	void saveComplaint(Complaint complaint);
 
 }
