@@ -2,9 +2,12 @@ package com.hrs.app.service;
 
 import java.util.List;
 
+
 import com.hrs.app.model.Appointment;
 import com.hrs.app.model.Favourite;
 import com.hrs.app.model.House;
+import com.hrs.app.model.MessageModel;
+import com.hrs.app.model.ReviewPropertyModel;
 import com.hrs.app.model.User;
 
 public interface UserService {
@@ -36,5 +39,14 @@ public interface UserService {
 	void savefavourites(Favourite favourite);
 
 	List<House> findAllFavs(Long id);
+
+	void saveMsg(MessageModel msg);
+
+	List<MessageModel> findAllMessages(String email);
+
+
+	void saveReviewProperty(ReviewPropertyModel property);
+	
+	List<House> getAllHouses();
 
 }
