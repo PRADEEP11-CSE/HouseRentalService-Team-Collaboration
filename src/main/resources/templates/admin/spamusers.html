@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Dashboard</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+ </head>
+<body>
+<nav class="navbar navbar-expand-lg" style="background-color: #FF9B01;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#" style="color:white">House Rental Service</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+           <a class="nav-link" style="color:green" aria-current="page" href="/admin">Home</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">       
+        <button class="btn btn-primary me-2"><a href="/login" style="color:white;text-decoration:none">Logout</a></button>
+      </form>
+    </div>
+  </div>
+</nav><br>
+<div class="container">
+
+  <center><h2 style="color:blue">Spam User</h2></center>
+  <br>
+  
+  <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">User Mail</th>
+      <th scope="col">Reason</th>
+    </tr>
+  </thead>
+  <tbody>
+  <th:block th:each="report : ${reports}">
+    <tr>
+      <td th:text="${report.userMail}"></td>
+      <td th:text="${report.reason}"></td>
+    </tr>
+  </th:block>
+  </tbody>
+</table>
+
+
+</div>
+</body>
+</html>
