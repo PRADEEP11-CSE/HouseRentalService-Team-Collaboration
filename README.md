@@ -9,6 +9,7 @@ Home Rental services is the platform which is used to connect the owners who wan
 
 **GETTING STARTED**
 
+ model:
 | Entity | Path | Description |
 | --- | --- | --- |
 | Announcements | src/main/java/com/hrs/app/model/Announcement.java | 
@@ -30,11 +31,31 @@ Home Rental services is the platform which is used to connect the owners who wan
 | User | src/main/java/com/hrs/app/model/User.java |
 
 
+Controller:
+| Entity | Path |
+| --- | --- |
+| Admin Controller | src/main/java/com/hrs/app/controller/AdminController.java|
+| House Rental Service Controller | src/main/java/com/hrs/app/controller/HouseRentalServiceController.java|
+| Owner Controller | src/main/java/com/hrs/app/controller/OwnerController.java |
+| User Controller | src/main/java/com/hrs/app/controller/OwnerController.java|
+
+service:
+| Entity | Path |
+| --- | --- |
+| Admin Service | src/main/java/com/hrs/app/service/AdminService.java|
+| Admin Service Impl | src/main/java/com/hrs/app/service/AdminServiceImpl.java |
+| Message Service | src/main/java/com/hrs/app/service/MessageService.java|
+| Message Service Impl| src/main/java/com/hrs/app/service/MessageServiceImpl.java |
+| Owner Service | src/main/java/com/hrs/app/service/OwnerService.java |
+| Owner Service Impl | src/main/java/com/hrs/app/service/OwnerServiceImpl.java |
+| User Service | src/main/java/com/hrs/app/service/UserService.java |
+| User Service Impl | src/main/java/com/hrs/app/service/UserServiceImpl.java |
 
 **INSTALLATION**
-| Hardware/Software | Source| Identifier |
-| Java |    |
-
+| Hardware/Software | Source| 
+| Java (JDK 8) |  https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html  |
+| Eclipse  | https://www.eclipse.org/    |
+| MySQL | https://www.mysql.com/   |
 
 
 **APPLIED TECHNOLOGIES**
@@ -46,11 +67,9 @@ Front end: HTML, CSS
 Database server/DMBS: MySQL
 
 
-**RUNNING THE TESTS**
-
-
-
-**REFERENCES**
+**TESTS**
+AdminControllerTest : src/test/java/com/hrs/app/test/AdminControllerTest.java
 
 
 **AUTHORS**
+Rahul Oruganti, Nandhitha Kothi, Rishitha Gudipati, Varun Chennuri, Sumanth Immadi, Pradeep Reddy Dasari {rorugan, nkothi, rgudipa, vchennu, simmadi, pdasari}@ilstu.edu
