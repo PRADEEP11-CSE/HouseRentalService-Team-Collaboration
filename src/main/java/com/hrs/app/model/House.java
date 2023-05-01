@@ -1,9 +1,11 @@
 package com.hrs.app.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -25,6 +27,11 @@ public class House {
 	private String houseOwnerMail;
 	private String noOfBedrooms;
 	private String noOfBathrooms;
+	@Lob
+	private byte[] document;
+	@Lob
+	@Column(columnDefinition = "MEDIUMBLOB")
+	private String housePhoto;
 	private String doorNo;
 	private String street;
 	private String city;
