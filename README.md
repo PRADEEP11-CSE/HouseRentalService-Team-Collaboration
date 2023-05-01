@@ -1,5 +1,10 @@
 # HouseRentalService-Team-Collaboration
 A Team Project for Advance Software Engineering Course (IT - 426)
+
+
+
+**GETTING STARTED**
+
 | Entity | Path |
 | --- | --- |
 | Announcements | src/main/java/com/hrs/app/model/Announcement.java |
@@ -19,3 +24,10 @@ A Team Project for Advance Software Engineering Course (IT - 426)
 | ReportUserModel | src/main/java/com/hrs/app/model/ReportUserModel.java |
 | Reserve | src/main/java/com/hrs/app/model/Reserve.java |
 | User | src/main/java/com/hrs/app/model/User.java |
+
+**INSTALLATION**
+| Hardware/Software | Source| Identifier |
+| Java |    |
+|  |    |
+|  |    |
+|  |    |
