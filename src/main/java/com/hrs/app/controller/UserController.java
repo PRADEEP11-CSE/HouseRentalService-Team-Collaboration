@@ -70,8 +70,6 @@ public class UserController {
 //        System.out.println(base64EncodedImage);
         List<House> houses = userService.getAllHouseDetails();
         model.addAttribute("houses", houses);
-        List<Announcement> notifications = userService.getAllAnnouncements();
-		model.addAttribute("notifications", notifications);
 		return "user/welcomeuser";
 	}
 	
@@ -183,7 +181,6 @@ public class UserController {
         User userdata = userService.findUser(messages.get(0));
         
         House house = ownerService.getHouseById(houseid);
-        model.addAttribute("role", userdata.getUsertype());
         
         appointment.setHouseId(houseid.toString());
 //        appointment.setHouseDetails(house.getHouseDetails());
@@ -243,7 +240,7 @@ public class UserController {
 		}
         model.addAttribute("sessionMessages", messages);
         User userdata = userService.findUser(messages.get(0));
-        model.addAttribute("role", userdata.getUsertype());
+        
         Favourite favourite = new Favourite();
         
         favourite.setHouseId(id);
@@ -264,7 +261,6 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
 		List<House> favs = userService.findAllFavs(userdata.getId());
 		model.addAttribute("houses", favs);
 		System.out.println("fffff");
@@ -305,7 +301,6 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
 		List<User> owners = ownerService.getAllOwners();
 		MessageModel msg = new MessageModel();
 		model.addAttribute("msg", msg);
@@ -327,7 +322,6 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
 		msg.setUserMail(userdata.getEmail());
 		msg.setAnswer("");
 
@@ -345,7 +339,6 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
 		List<MessageModel> msgs = userService.findAllMessages(userdata.getEmail());
 		model.addAttribute("msgs", msgs);
 		model.addAttribute("role", userdata.getUsertype());
@@ -363,7 +356,6 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
 		System.out.println("reported Owner");
 		
 		User user = userService.findUser(report.getUserMail());
@@ -385,7 +377,6 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata =userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
 		List<User> owners = userService.getAllOwners();
 		model.addAttribute("owners", owners);
 		ReportOwnerModel report = new ReportOwnerModel();
@@ -407,7 +398,6 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata =userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
 		List<House> houses = userService.getAllBookedHouseDetails(userdata.getId());
 		model.addAttribute("houses", houses);
 		Maintenance maintenance = new Maintenance();
@@ -427,7 +417,6 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
 		System.out.println("reported Owner");
 		
 		maintenance.setUserMail(userdata.getEmail());
@@ -448,7 +437,6 @@ public class UserController {
 		}
         model.addAttribute("sessionMessages", messages);
         User userdata = userService.findUser(messages.get(0));
-        model.addAttribute("role", userdata.getUsertype());
         House houseDetails = ownerService.getHouseDetailsById(id);
         model.addAttribute("houseid", id);
         model.addAttribute("houseRent", houseDetails.getHouseRent());
@@ -457,7 +445,7 @@ public class UserController {
 		return "user/bookhouse";
 	}
 	
-	@PostMapping("/book")
+	@PostMapping("/bookHouse")
 	public String bookHouse( HttpSession session, Model model, 
 			@ModelAttribute("book") Book book,
 			@RequestParam("doc1") MultipartFile file1,
@@ -472,7 +460,7 @@ public class UserController {
 		}
         model.addAttribute("sessionMessages", messages);
         User userdata = userService.findUser(messages.get(0));
-        model.addAttribute("role", userdata.getUsertype());
+        
         book.setHouseId(houseid);
         book.setUserId(userdata.getId().toString());
         
@@ -514,7 +502,6 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
 		List<User> owners = userService.getAllOwners();
 		model.addAttribute("owners", owners);
 		ReviewPropertyModel property = new ReviewPropertyModel();
@@ -547,7 +534,6 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
 		
 		Complaint complaint = new Complaint();
 		model.addAttribute("complaint", complaint);
@@ -568,7 +554,6 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
 		
 		List<Announcement> notifications = userService.getAllAnnouncements();
 		model.addAttribute("notifications", notifications);
@@ -599,7 +584,6 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
 	
 		return "user/referfriend";
 	}
@@ -616,7 +600,7 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
+		
 		Coupon coupon = new Coupon();
 		
 		coupon.setCouponTitle("REFERRAL");
@@ -656,7 +640,7 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		 model.addAttribute("role", userdata.getUsertype());
+		
 		List<Coupon> coupons = adminService.getAllCoupons();
 		model.addAttribute("coupons", coupons);
 	
@@ -675,7 +659,7 @@ public class UserController {
 		}
         model.addAttribute("sessionMessages", messages);
         User userdata = userService.findUser(messages.get(0));
-        model.addAttribute("role", userdata.getUsertype());
+       
        List<House> houses = userService.getAllHouses();
        model.addAttribute("houses", houses);
        List<User> owners = userService.getAllOwners();
@@ -698,11 +682,10 @@ public class UserController {
 		}
         model.addAttribute("sessionMessages", messages);
         User userdata = userService.findUser(messages.get(0));
-        model.addAttribute("role", userdata.getUsertype());
       lease.setUserMail(userdata.getEmail());
       
       try {
-      	lease.setLeaseDocument(file1.getBytes());
+      	lease.setLeaseDocument(Base64.getEncoder().encodeToString(file1.getBytes()));
       	
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -727,7 +710,6 @@ public class UserController {
 		}
         model.addAttribute("sessionMessages", messages);
         User userdata = userService.findUser(messages.get(0));
-        model.addAttribute("role", userdata.getUsertype());
        
        List<House> houses = userService.getAllHouses();
        model.addAttribute("houses", houses);
@@ -754,10 +736,9 @@ public class UserController {
 		}
         model.addAttribute("sessionMessages", messages);
         User userdata = userService.findUser(messages.get(0));
-        model.addAttribute("role", userdata.getUsertype());
-      lease.setIsApproved("0");
+      
       try {
-      	lease.setLeaseDocument(file1.getBytes());
+      	lease.setLeaseDocument(Base64.getEncoder().encodeToString(file1.getBytes()));
       	
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
