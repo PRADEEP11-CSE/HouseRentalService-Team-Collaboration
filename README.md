@@ -8,15 +8,15 @@ Home Rental services is the platform which is used to connect the owners who wan
 
 **GETTING STARTED**
 
-| Entity | Path |
-| --- | --- |
-| Announcements | src/main/java/com/hrs/app/model/Announcement.java |
+| Entity | Path | Description |
+| --- | --- | --- |
+| Announcements | src/main/java/com/hrs/app/model/Announcement.java | 
 | Appointment | src/main/java/com/hrs/app/model/Appointment.java |
 | Bill  | src/main/java/com/hrs/app/model/Bill.java |
 | Book  | src/main/java/com/hrs/app/model/Book.java  |
 | Complaint | src/main/java/com/hrs/app/model/Complaint.java |
 | Coupon | src/main/java/com/hrs/app/model/Coupon.java |
-| Email | src/main/java/com/hrs/app/model/Email.java |  |
+| Email | src/main/java/com/hrs/app/model/Email.java |  
 | Favourite | src/main/java/com/hrs/app/model/Favourite.java |
 | House | src/main/java/com/hrs/app/model/House.java |
 | Lease | src/main/java/com/hrs/app/model/Lease.java |
@@ -28,9 +28,24 @@ Home Rental services is the platform which is used to connect the owners who wan
 | Reserve | src/main/java/com/hrs/app/model/Reserve.java |
 | User | src/main/java/com/hrs/app/model/User.java |
 
+
+
 **INSTALLATION**
 | Hardware/Software | Source| Identifier |
 | Java |    |
+
+
+
+**APPLIED TECHNOLOGIES**
+
+IDE: eclipse
+Programming languages : java (JDK 8)
+Frameworks and libraries : Spring boot 
+Front end: HTML, CSS
+Database server/DMBS: MySQL
+
+
+**RUNNING THE TESTS**
 
 
 
