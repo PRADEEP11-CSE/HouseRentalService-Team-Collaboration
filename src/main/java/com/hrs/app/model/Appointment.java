@@ -25,6 +25,7 @@ public class Appointment {
 	private String visitDate;
 	private String visitTime;
 	private String type;
+	private String status;
 
 	
 }

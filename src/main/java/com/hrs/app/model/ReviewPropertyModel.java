@@ -1,11 +1,9 @@
 package com.hrs.app.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -16,20 +14,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "leases")
-public class Lease {
-
+@Table(name = "review_property")
+public class ReviewPropertyModel {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
 	private String houseId;
-	private String userMail;
-	private String ownerMail;
-	
-	@Lob
-	@Column(columnDefinition = "MEDIUMBLOB")
-	private String leaseDocument;
-	
+	private String rating;
+	private String description;
 
-
+	
 }
