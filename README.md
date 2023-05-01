@@ -10,8 +10,8 @@ Home Rental services is the platform which is used to connect the owners who wan
 **GETTING STARTED**
 
  model:
-| Entity | Path | Description |
-| --- | --- | --- |
+| Entity | Path | 
+| --- | --- |
 | Announcements | src/main/java/com/hrs/app/model/Announcement.java | 
 | Appointment | src/main/java/com/hrs/app/model/Appointment.java |
 | Bill  | src/main/java/com/hrs/app/model/Bill.java |
@@ -53,6 +53,7 @@ service:
 
 **INSTALLATION**
 | Hardware/Software | Source| 
+| --- | --- |
 | Java (JDK 8) |  https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html  |
 | Eclipse  | https://www.eclipse.org/    |
 | MySQL | https://www.mysql.com/   |
@@ -61,15 +62,21 @@ service:
 **APPLIED TECHNOLOGIES**
 
 IDE: eclipse
+
 Programming languages : java (JDK 8)
+
 Frameworks and libraries : Spring boot 
+
 Front end: HTML, CSS
+
 Database server/DMBS: MySQL
 
 
-**TESTS**
+**TESTS** 
+
 AdminControllerTest : src/test/java/com/hrs/app/test/AdminControllerTest.java
 
 
 **AUTHORS**
+
 Rahul Oruganti, Nandhitha Kothi, Rishitha Gudipati, Varun Chennuri, Sumanth Immadi, Pradeep Reddy Dasari {rorugan, nkothi, rgudipa, vchennu, simmadi, pdasari}@ilstu.edu
