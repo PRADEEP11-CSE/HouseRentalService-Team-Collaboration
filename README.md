@@ -1,6 +1,8 @@
 # HouseRentalService-Team-Collaboration
 A Team Project for Advance Software Engineering Course (IT - 426)
 
+**INTRODUCTION**
+
 
 
 **GETTING STARTED**
@@ -31,3 +33,9 @@ A Team Project for Advance Software Engineering Course (IT - 426)
 |  |    |
 |  |    |
 |  |    |
+
+
+**REFERENCES**
+
+
+**AUTHORS**
