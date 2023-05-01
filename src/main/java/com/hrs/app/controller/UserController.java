@@ -1,5 +1,8 @@
 package com.hrs.app.controller;
 
+import java.io.IOException;
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +14,24 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.hrs.app.model.Announcement;
 import com.hrs.app.model.Appointment;
+import com.hrs.app.model.Book;
+import com.hrs.app.model.Complaint;
+import com.hrs.app.model.Coupon;
+import com.hrs.app.model.Email;
 import com.hrs.app.model.Favourite;
 import com.hrs.app.model.House;
+import com.hrs.app.model.Lease;
+import com.hrs.app.model.Maintenance;
+import com.hrs.app.model.MessageModel;
+import com.hrs.app.model.ReportOwnerModel;
+import com.hrs.app.model.ReviewPropertyModel;
 import com.hrs.app.model.User;
+import com.hrs.app.service.AdminService;
+import com.hrs.app.service.MessageService;
 import com.hrs.app.service.OwnerService;
 import com.hrs.app.service.OwnerServiceImpl;
 import com.hrs.app.service.UserService;
@@ -29,6 +45,12 @@ public class UserController {
 	
 	@Autowired
 	private OwnerService ownerService;
+	
+	@Autowired
+	private MessageService messageService;
+	
+	@Autowired
+	private AdminService adminService;
 	
 	@GetMapping("/user")
 	public String getUserWelcomePage(@ModelAttribute("user") User user, Model model, HttpSession session)
@@ -48,6 +70,8 @@ public class UserController {
 //        System.out.println(base64EncodedImage);
         List<House> houses = userService.getAllHouseDetails();
         model.addAttribute("houses", houses);
+        List<Announcement> notifications = userService.getAllAnnouncements();
+		model.addAttribute("notifications", notifications);
 		return "user/welcomeuser";
 	}
 	
@@ -159,11 +183,13 @@ public class UserController {
         User userdata = userService.findUser(messages.get(0));
         
         House house = ownerService.getHouseById(houseid);
+        model.addAttribute("role", userdata.getUsertype());
         
         appointment.setHouseId(houseid.toString());
 //        appointment.setHouseDetails(house.getHouseDetails());
         
         appointment.setUserId(userdata.getId().toString());
+        appointment.setStatus("0");
         
         userService.saveAppointment(appointment);
         return "redirect:/user";
@@ -217,7 +243,7 @@ public class UserController {
 		}
         model.addAttribute("sessionMessages", messages);
         User userdata = userService.findUser(messages.get(0));
-        
+        model.addAttribute("role", userdata.getUsertype());
         Favourite favourite = new Favourite();
         
         favourite.setHouseId(id);
@@ -238,6 +264,7 @@ public class UserController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
 		List<House> favs = userService.findAllFavs(userdata.getId());
 		model.addAttribute("houses", favs);
 		System.out.println("fffff");
@@ -267,5 +294,483 @@ public class UserController {
 //        model.addAttribute("bookings", bookings);
 //		return "user/previousbookings";
 //	}
+	
+	@GetMapping("/sendMessage")
+	public String viewMessagePage(Model model, HttpSession session) {
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+		List<User> owners = ownerService.getAllOwners();
+		MessageModel msg = new MessageModel();
+		model.addAttribute("msg", msg);
+		model.addAttribute("owners", owners);
+		model.addAttribute("role", userdata.getUsertype());
+		return "user/sendmsg";
+		
+	}
+	
+	@PostMapping("/sendMsg")
+	public String saveMessage(@ModelAttribute("msg") MessageModel msg, HttpSession session, Model model )
+	{
+		System.out.println("raised Ticket");
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+		msg.setUserMail(userdata.getEmail());
+		msg.setAnswer("");
+
+		userService.saveMsg(msg);
+		
+		return "redirect:/user";
+	}
+	
+	@GetMapping("/viewReplies")
+	public String viewMessagesPage(Model model, HttpSession session) {
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+		List<MessageModel> msgs = userService.findAllMessages(userdata.getEmail());
+		model.addAttribute("msgs", msgs);
+		model.addAttribute("role", userdata.getUsertype());
+		return "user/viewmessages";
+		
+	}
+	
+	@PostMapping("/reportOwner")
+	public String report(@ModelAttribute("report") ReportOwnerModel report, Model model, HttpSession session)
+	{
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+		System.out.println("reported Owner");
+		
+		User user = userService.findUser(report.getUserMail());
+		
+		report.setUserMail(userdata.getEmail());
+		ownerService.saveReport(report);
+		
+		return "redirect:/user";
+	}
+	
+	@GetMapping("/reportOwners")
+	public String reportOwners(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata =userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+		List<User> owners = userService.getAllOwners();
+		model.addAttribute("owners", owners);
+		ReportOwnerModel report = new ReportOwnerModel();
+		model.addAttribute("report", report);
+		
+
+		return "user/reportowner";
+	}
+	
+	
+	@GetMapping("/requestMaintenance")
+	public String reportMaintenance(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata =userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+		List<House> houses = userService.getAllBookedHouseDetails(userdata.getId());
+		model.addAttribute("houses", houses);
+		Maintenance maintenance = new Maintenance();
+		model.addAttribute("maintenance", maintenance);
+		
+
+		return "user/requestmaintenance";
+	}
+	
+	@PostMapping("/saveMaintenance")
+	public String saveMaintenance(@ModelAttribute("maintenance") Maintenance maintenance, Model model, HttpSession session)
+	{
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+		System.out.println("reported Owner");
+		
+		maintenance.setUserMail(userdata.getEmail());
+		userService.saveMaintenance(maintenance);
+		
+		return "redirect:/user";
+	}
+	
+	@GetMapping("/bookHouse/{id}")
+	public String bookHouse(@PathVariable(name="id") Long id, Model model, HttpSession session)
+	{
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+        model.addAttribute("sessionMessages", messages);
+        User userdata = userService.findUser(messages.get(0));
+        model.addAttribute("role", userdata.getUsertype());
+        House houseDetails = ownerService.getHouseDetailsById(id);
+        model.addAttribute("houseid", id);
+        model.addAttribute("houseRent", houseDetails.getHouseRent());
+        Book book = new Book();
+        model.addAttribute("book", book);
+		return "user/bookhouse";
+	}
+	
+	@PostMapping("/book")
+	public String bookHouse( HttpSession session, Model model, 
+			@ModelAttribute("book") Book book,
+			@RequestParam("doc1") MultipartFile file1,
+			@RequestParam("doc2") MultipartFile file2,
+			@RequestParam("houseid") String houseid) {
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+        model.addAttribute("sessionMessages", messages);
+        User userdata = userService.findUser(messages.get(0));
+        model.addAttribute("role", userdata.getUsertype());
+        book.setHouseId(houseid);
+        book.setUserId(userdata.getId().toString());
+        
+        String rent = book.getHouseRent();
+        try {
+        	book.setDocument1(Base64.getEncoder().encodeToString(file1.getBytes()));
+        	book.setDocument2(Base64.getEncoder().encodeToString(file2.getBytes()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        Book result = userService.saveBookHouse(book);
+        
+        if(result == null) {
+        	model.addAttribute("errormsg", "Coupon Not Found, Please Try Booking Again");
+			return "home/error";
+        }
+        
+        if(result.getHouseRent().equals(rent))
+        {
+        	model.addAttribute("errormsg", "Coupoun Not Applied House Rent is " + result.getHouseRent() + "$");
+			return "home/error";
+        } else {
+        	model.addAttribute("errormsg", "Coupoun Applied Successfully House Rent is " + result.getHouseRent() + "$");
+			return "home/error";
+        }
+        
+	}
+	
+	@GetMapping("/reviewProperty")
+	public String reviewProperty(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+		List<User> owners = userService.getAllOwners();
+		model.addAttribute("owners", owners);
+		ReviewPropertyModel property = new ReviewPropertyModel();
+		model.addAttribute("property", property);
+		List<House> houses = userService.getAllHouses();
+		model.addAttribute("houses", houses);
+
+		return "user/reviewproperty";
+	}
+	
+	@PostMapping("/reviewHouseProperty")
+	public String reviewHouseProperty(@ModelAttribute("property") ReviewPropertyModel property, Model model, HttpSession session)
+	{
+		System.out.println("reported Owner");
+	
+		
+		userService.saveReviewProperty(property);
+		
+		return "redirect:/user";
+	}
+	
+	@GetMapping("/raiseComplaint")
+	public String raiseComplaint(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+		
+		Complaint complaint = new Complaint();
+		model.addAttribute("complaint", complaint);
+		List<House> houses = userService.getAllHouses();
+		model.addAttribute("houses", houses);
+
+		return "user/raisecomplaint";
+	}
+	
+	@GetMapping("/usernotifications")
+	public String notifications(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+		
+		List<Announcement> notifications = userService.getAllAnnouncements();
+		model.addAttribute("notifications", notifications);
+	
+		return "user/viewnotifications";
+	}
+	
+	@PostMapping("/saveComplaint")
+	public String saveComplaint(@ModelAttribute("complaint") Complaint complaint, Model model, HttpSession session)
+	{
+		System.out.println("reported Owner");
+	
+		
+		userService.saveComplaint(complaint);
+		
+		return "redirect:/user";
+	}
+	
+	
+	@GetMapping("/referFriend")
+	public String referFriend(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+	
+		return "user/referfriend";
+	}
+	
+
+	@PostMapping("/refer")
+	public String refer(@RequestParam("email") String email, Model model, HttpSession session)
+	{
+		int output = 0;
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+		Coupon coupon = new Coupon();
+		
+		coupon.setCouponTitle("REFERRAL");
+		coupon.setCouponCode("REFERBY"+userdata.getId().toString());
+		coupon.setDiscountAmount("500");
+		
+		Date date = new Date();
+		coupon.setStartDate(date.toString());
+		coupon.setEndDate(date.toString());
+		
+		
+		Email emailmodel = new Email();
+		emailmodel.setMsgBody("You have been referred by "+ userdata.getEmail()+"coupon code is "+ coupon.getCouponCode());
+		emailmodel.setRecipient(email);
+		emailmodel.setSubject("Referral from House Rental Service");
+		
+		adminService.addCoupon(coupon);
+		System.out.println("------------------body"+ emailmodel.getMsgBody()+"======="+ emailmodel.getRecipient());
+		output = messageService.sendSimpleMail(emailmodel);
+		
+		System.out.println("------------------"+ output);
+		if(output !=1) {
+			model.addAttribute("errmsg", "User Email address not found.");
+		}
+		
+		return "redirect:/user";
+	}
+
+	@GetMapping("/getCoupons")
+	public String getCoupons(Model model, HttpSession session) {
+		
+		
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+		User userdata = userService.findUser(messages.get(0));
+		 model.addAttribute("role", userdata.getUsertype());
+		List<Coupon> coupons = adminService.getAllCoupons();
+		model.addAttribute("coupons", coupons);
+	
+		return "user/coupons";
+	}
+	
+	@GetMapping("/signLease")
+	public String signLease(Model model, HttpSession session)
+	{
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+        model.addAttribute("sessionMessages", messages);
+        User userdata = userService.findUser(messages.get(0));
+        model.addAttribute("role", userdata.getUsertype());
+       List<House> houses = userService.getAllHouses();
+       model.addAttribute("houses", houses);
+       List<User> owners = userService.getAllOwners();
+       model.addAttribute("owners", owners);
+        Lease lease = new Lease();
+        model.addAttribute("lease", lease);
+		return "user/leasehouse";
+	}
+	
+	@PostMapping("/leaseHouse")
+	public String leaseHouse( HttpSession session, Model model, 
+			@ModelAttribute("lease") Lease lease,
+			@RequestParam("lease") MultipartFile file1) {
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+        model.addAttribute("sessionMessages", messages);
+        User userdata = userService.findUser(messages.get(0));
+        model.addAttribute("role", userdata.getUsertype());
+      lease.setUserMail(userdata.getEmail());
+      
+      try {
+      	lease.setLeaseDocument(file1.getBytes());
+      	
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+      
+      userService.saveLease(lease);
+        
+      return "redirect:/user";
+        
+	}
+	
+	@GetMapping("/transferLease")
+	public String transferLease(Model model, HttpSession session)
+	{
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+        model.addAttribute("sessionMessages", messages);
+        User userdata = userService.findUser(messages.get(0));
+        model.addAttribute("role", userdata.getUsertype());
+       
+       List<House> houses = userService.getAllHouses();
+       model.addAttribute("houses", houses);
+       List<User> users = userService.getAllUsers();
+       model.addAttribute("users", users);
+       
+       List<User> owners = userService.getAllOwners();
+       model.addAttribute("owners", owners);
+        Lease lease = new Lease();
+        model.addAttribute("lease", lease);
+		return "user/transferlease";
+	}
+	
+	@PostMapping("/transferHouse")
+	public String transferHouse( HttpSession session, Model model, 
+			@ModelAttribute("lease") Lease lease,
+			@RequestParam("lease") MultipartFile file1) {
+		@SuppressWarnings("unchecked")
+        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
+
+		if(messages == null) {
+			model.addAttribute("errormsg", "Session Expired. Please Login Again");
+			return "home/error";
+		}
+        model.addAttribute("sessionMessages", messages);
+        User userdata = userService.findUser(messages.get(0));
+        model.addAttribute("role", userdata.getUsertype());
+      lease.setIsApproved("0");
+      try {
+      	lease.setLeaseDocument(file1.getBytes());
+      	
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+      
+      userService.saveLease(lease);
+        
+      return "redirect:/user";
+        
+	}
+	
+	
+	
 
 }
