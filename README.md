@@ -2,6 +2,7 @@
 A Team Project for Advance Software Engineering Course (IT - 426)
 
 **INTRODUCTION**
+Home Rental services is the platform which is used to connect the owners who wants to rent the properties for the tenants searching for the rental accommodations.
 
 
 
@@ -30,9 +31,7 @@ A Team Project for Advance Software Engineering Course (IT - 426)
 **INSTALLATION**
 | Hardware/Software | Source| Identifier |
 | Java |    |
-|  |    |
-|  |    |
-|  |    |
+
 
 
 **REFERENCES**
