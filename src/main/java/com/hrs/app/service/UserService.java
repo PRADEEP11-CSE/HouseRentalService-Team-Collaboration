@@ -68,4 +68,6 @@ public interface UserService {
 
 	List<User> getAllUsers();
 
+	List<Lease> getAllLeases();
+
 }

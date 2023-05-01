@@ -18,4 +18,7 @@ public interface ReportUserRepo extends JpaRepository<ReportUserModel, Long> {
 	@Query( value = "select * from report_users where owner_mail = :email", nativeQuery = true)
 	List<ReportUserModel> findMyAllReports(@Param("email") String email);
 
+	@Query( value = "select * from report_users where id = :id", nativeQuery = true)
+	ReportUserModel findReportById(Long id);
+
 }

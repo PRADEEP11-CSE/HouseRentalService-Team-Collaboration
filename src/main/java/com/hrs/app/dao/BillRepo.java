@@ -8,14 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.hrs.app.model.Bill;
 import com.hrs.app.model.Book;
 
 
 @Repository
-public interface BookRepo extends JpaRepository<Book, Long> {
+public interface BillRepo extends JpaRepository<Bill, Long> {
 
 	
-	@Query( value = "select * from bookings where user_id = :id", nativeQuery = true)
-	List<Book> getAllBookingsOfUser(@Param("id") Long id);
 
 }

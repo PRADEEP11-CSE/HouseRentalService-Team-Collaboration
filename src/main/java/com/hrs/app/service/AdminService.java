@@ -2,11 +2,13 @@ package com.hrs.app.service;
 
 import java.util.List;
 
+import com.hrs.app.dao.LeaseRepo;
 import com.hrs.app.model.Announcement;
 import com.hrs.app.model.Bill;
 import com.hrs.app.model.Complaint;
 import com.hrs.app.model.Coupon;
 import com.hrs.app.model.House;
+import com.hrs.app.model.Lease;
 import com.hrs.app.model.ReportUserModel;
 
 public interface AdminService {
@@ -30,5 +32,12 @@ public interface AdminService {
 	void removeUser(Long id);
 
 	List<Coupon> getAllCoupons();
+
+	Lease getLeaseDocument(Long id);
+
+	void verifyLease(Long id);
+	
+	void removeReportUser(Long id);
+	
 
 }

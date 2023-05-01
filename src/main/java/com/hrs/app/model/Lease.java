@@ -28,7 +28,8 @@ public class Lease {
 	
 	@Lob
 	@Column(columnDefinition = "MEDIUMBLOB")
-	private String leaseDocument;
+	private byte[] leaseDocument;
+	private String isApproved;
 	
 
 

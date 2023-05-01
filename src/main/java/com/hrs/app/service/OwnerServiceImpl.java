@@ -112,7 +112,7 @@ public class OwnerServiceImpl implements OwnerService{
 		
 		List<Appointment> appointments = new ArrayList<Appointment>();
 		
-		appointmentRepo.findAll().stream().filter(app -> app.getStatus().equals("0")).forEach(apt -> {
+		appointmentRepo.findAll().stream().forEach(apt -> {
 			
 			houseRepo.findAll().forEach(house -> {
 				if(apt.getHouseId().equals(house.getId().toString()) && house.getHouseOwnerMail().equals(email)) {

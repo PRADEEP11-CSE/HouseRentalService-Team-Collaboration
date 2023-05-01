@@ -169,7 +169,7 @@ public class OwnerController {
 	}
 	
 	@PostMapping("/updateHouse")
-	public String updateHouse(@ModelAttribute("house") House house, Model model, HttpSession session)
+	public String updateHouse(@ModelAttribute("house") House house, Model model, HttpSession session,@RequestParam("image") MultipartFile houseImage)
 	{
 		System.out.println("house updated");
 		@SuppressWarnings("unchecked")
@@ -179,7 +179,12 @@ public class OwnerController {
 			return "home/error";
 		}
 		User userdata = userService.findUser(messages.get(0));
-		
+		 try {			
+				house.setHousePhoto(Base64.getEncoder().encodeToString(houseImage.getBytes()));
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 		
 		house.setHouseOwnerMail(userdata.getEmail());
 		ownerService.updateHouse(house);
@@ -306,6 +311,26 @@ public class OwnerController {
 		return "redirect:/owner";
 	}
 	
+	@GetMapping("/approveAppointment/{id}")
+	public String approveAppointment(Model model, @PathVariable(name="id") Long id) {
+		
+		
+		ownerService.approve(id);
+		
+		
+		return "redirect:/owner";
+		
+	}
 	
+	@GetMapping("/rejectAppointment/{id}")
+	public String rejectAppointment(Model model, @PathVariable(name="id") Long id) {
+		
+		
+		ownerService.reject(id);
+		
+		
+		return "redirect:/owner";
+		
+	}
 
 }

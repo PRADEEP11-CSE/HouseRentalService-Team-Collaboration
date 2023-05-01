@@ -1,9 +1,11 @@
 package com.hrs.app.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -24,5 +26,8 @@ public class Announcement {
 	private String announcementDescription;
 	private String startDate;
 	private String startTime;
+	@Lob
+	@Column(columnDefinition = "MEDIUMBLOB")
+	private String announcementPhoto;
 	
 }

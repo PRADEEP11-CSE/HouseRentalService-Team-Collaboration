@@ -216,9 +216,9 @@ public class UserServiceImpl implements UserService{
 	public List<House> searchHouses(String searchKey) {
 		// TODO Auto-generated method stub
 		List<House> houses = houseRepo.findAll();
-		List<House> searchedHouses = houses.stream().filter(house -> house.getHouseName().contains(searchKey) ||
+		List<House> searchedHouses = houses.stream().filter(house -> (house.getHouseName().contains(searchKey) ||
 				house.getHouseRent().equals(searchKey) || house.getAvailableFrom().contains(searchKey)
-				|| house.getNoOfBedrooms().equals(searchKey)|| house.getNoOfBathrooms().equals(searchKey)).collect(Collectors.toList());
+				|| house.getNoOfBedrooms().equals(searchKey)|| house.getNoOfBathrooms().equals(searchKey)) && house.getIsBooked().equals("0")).collect(Collectors.toList());
 		return searchedHouses;
 		
 	}
@@ -370,6 +370,12 @@ public class UserServiceImpl implements UserService{
 	public List<User> getAllUsers() {
 		// TODO Auto-generated method stub
 		return userRepo.getAllUsers();
+	}
+
+	@Override
+	public List<Lease> getAllLeases() {
+		// TODO Auto-generated method stub
+		return leaseRepo.findAll().stream().filter(l -> l.getIsApproved().equals("0")).collect(Collectors.toList());
 	}
 
 }
