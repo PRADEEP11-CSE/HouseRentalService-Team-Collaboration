@@ -8,6 +8,7 @@ import com.hrs.app.model.Book;
 import com.hrs.app.model.Complaint;
 import com.hrs.app.model.Favourite;
 import com.hrs.app.model.House;
+import com.hrs.app.model.Lease;
 import com.hrs.app.model.Maintenance;
 import com.hrs.app.model.MessageModel;
 import com.hrs.app.model.ReviewPropertyModel;
@@ -60,5 +61,11 @@ public interface UserService {
 	List<House> getAllHouses();
 
 	void saveComplaint(Complaint complaint);
+
+	List<Announcement> getAllAnnouncements();
+
+	void saveLease(Lease lease);
+
+	List<User> getAllUsers();
 
 }

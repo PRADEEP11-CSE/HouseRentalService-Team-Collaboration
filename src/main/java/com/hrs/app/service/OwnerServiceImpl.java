@@ -161,4 +161,23 @@ public class OwnerServiceImpl implements OwnerService{
 		return userRepo.getAllUsers();
 	}
 
+	@Override
+	public void approve(Long id) {
+		// TODO Auto-generated method stub
+		Appointment app = appointmentRepo.findAppointmentById(id);
+		app.setStatus("1");
+		appointmentRepo.save(app);
+		
+		
+	}
+
+	@Override
+	public void reject(Long id) {
+		// TODO Auto-generated method stub
+		Appointment app = appointmentRepo.findAppointmentById(id);
+		app.setStatus("2");
+		appointmentRepo.save(app);
+		
+	}
+
 }

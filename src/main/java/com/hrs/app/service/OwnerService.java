@@ -41,4 +41,8 @@ public interface OwnerService {
 
 	List<User> getAllUsers();
 
+	void approve(Long id);
+
+	void reject(Long id);
+
 }
