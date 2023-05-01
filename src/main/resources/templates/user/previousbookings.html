@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
  </head>
 <body>
-  <nav class="navbar navbar-expand-lg" style="background-color: #FF9B01;">
+  <nav class="navbar navbar-expand-lg" style="background-color: #223598;">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/" style="color:white">House Rental Service</a>
+    <a class="navbar-brand" href="/" style="color:white"><b>House Rental Service</b></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -19,21 +19,21 @@
       <li class="nav-item">
           <a class="nav-link active" style="color:green" aria-current="page" href="/user">Home</a>
         </li>
-         <li class="nav-item">
-          <a class="nav-link" style="color:green" aria-current="page" href="/reportOwner">Report Owner</a>
+           <li class="nav-item">
+          <a class="nav-link" style="color:green" aria-current="page" href="/reportOwners">Report Owner</a>
         </li>
-         <li class="nav-item">
-          <a class="nav-link" style="color:green" aria-current="page" href="/reviewOwner">Review Owner</a>
+        
+        <li class="nav-item">
+          <a class="nav-link" style="color:green" aria-current="page" href="/requestMaintenance">Request Maintenance</a>
         </li>
-            <li class="nav-item">
+        
+         <li class="nav-item">
           <a class="nav-link" style="color:green" aria-current="page" href="/reviewProperty">Review Property</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" style="color:green" aria-current="page" href="/reviewapp">Post Review</a>
+          <li class="nav-item">
+          <a class="nav-link" style="color:green" aria-current="page" href="/raiseComplaint">Raise Complaint</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" style="color:green" aria-current="page" href="/ticketraise">Raise Ticket</a>
-        </li>
+        
       </th:block>
 
       </ul>
@@ -44,8 +44,7 @@
 		  </button>
 		  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 		    <button class="dropdown-item" type="button"><a href="/filter" style="color:black;text-decoration:none">Filter</a></button>
-		    <button class="dropdown-item" type="button"><a href="/advancedFilter" style="color:black;text-decoration:none">Advance Filter</a></button>
-		     <button class="dropdown-item" type="button"><a href="/sortByPrice" style="color:black;text-decoration:none">Sort by Price</a></button>
+		    
 		  </div>
 		</div>  
         <input class="form-control me-2" type="search" placeholder="Search" name="searchKey" aria-label="Search">
@@ -56,12 +55,14 @@
 		  </button>
 		  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 		    <button class="dropdown-item" type="button"><a href="/profile" style="color:black;text-decoration:none">Profile</a></button>
-		    <button class="dropdown-item" type="button"><a href="/usernotifications" style="color:black;text-decoration:none">Notifications</a></button>
-		    <button class="dropdown-item" type="button"><a href="/previousBookings" style="color:black;text-decoration:none">Previous Bookings</a></button>
+		     <button class="dropdown-item" type="button"><a href="/viewFavourites" style="color:black;text-decoration:none">Whishlist</a></button>
+		   		    <button class="dropdown-item" type="button"><a href="/usernotifications" style="color:black;text-decoration:none">Notifications</a></button>
 		    <button class="dropdown-item" type="button"><a href="/sendMessage" style="color:black;text-decoration:none">Send Message</a></button>
 		    <button class="dropdown-item" type="button"><a href="/viewReplies" style="color:black;text-decoration:none">View Messages</a></button>
-		    <button class="dropdown-item" type="button"><a href="/viewFaqsStudent" style="color:black;text-decoration:none">FAQs</a></button>
-		      <button class="dropdown-item" type="button"><a href="/nearBy" style="color:black;text-decoration:none">Near Services</a></button>
+		     <button class="dropdown-item" type="button"><a href="/referFriend" style="color:black;text-decoration:none">Refer Friend</a></button>
+		     <button class="dropdown-item" type="button"><a href="/getCoupons" style="color:black;text-decoration:none">Coupons</a></button>
+		     <button class="dropdown-item" type="button"><a href="/signLease" style="color:black;text-decoration:none">Sign Lease</a></button>
+		      <button class="dropdown-item" type="button"><a href="/transferLease" style="color:black;text-decoration:none">Transfer Lease</a></button>
 		  </div>
 		</div>     
         <button class="btn btn-primary me-2"><a href="/login" style="color:white;text-decoration:none">Logout</a></button>

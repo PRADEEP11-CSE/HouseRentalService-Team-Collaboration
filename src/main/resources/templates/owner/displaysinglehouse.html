@@ -8,9 +8,9 @@
    
  </head>
 <body>
-  <nav class="navbar navbar-expand-lg" style="background-color: #FF9B01;">
+   <nav class="navbar navbar-expand-lg" style="background-color: #223598;">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#" style="color:white">House Rental Service</a>
+    <a class="navbar-brand" href="/" style="color:white"><b>House Rental Service</b></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -18,19 +18,21 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <th:block th:if="${role} =='houseowner'">
       <li class="nav-item">
-          <a class="nav-link" style="color:green" aria-current="page" href="/houseowner">Home</a>
+          <a class="nav-link active" style="color:green" aria-current="page" href="/owner">Home</a>
         </li>
       <li class="nav-item">
           <a class="nav-link" style="color:green" aria-current="page" href="/createHouse">Post House</a>
       </li>
       <li class="nav-item">
-          <a class="nav-link active" style="color:green" aria-current="page" href="/viewHouses">View Houses</a>
-        </li> 
+          <a class="nav-link" style="color:green" aria-current="page" href="/viewHouses">View Houses</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" style="color:green" aria-current="page" href="/reportUser">Report User</a>
+        </li>
       </th:block>
         
       </ul>
       <form class="d-flex" role="search">
-
 		<div class="dropdown me-2">
 		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		     <i class="bi bi-person-circle" style="color:white;"></i>
@@ -38,8 +40,8 @@
 		  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 		    <button class="dropdown-item" type="button"><a href="/profile" style="color:black;text-decoration:none">Profile</a></button>
 		    <button class="dropdown-item" type="button"><a href="/viewAppointments" style="color:black;text-decoration:none">Appointments</a></button>
-		   
-		    
+		   <button class="dropdown-item" type="button"><a href="/viewMessages" style="color:black;text-decoration:none">Messages</a></button>
+		  		    <button class="dropdown-item" type="button"><a href="/usernotifications" style="color:black;text-decoration:none">Notifications</a></button>
 		  </div>
 		</div>
 		<button class="btn btn-primary me-2"><a href="/destroy" style="color:white;text-decoration:none">Logout</a></button>
@@ -51,9 +53,9 @@
 
  			<div class="card col-6 mt-3" style="margin:20px;">
                 <div class="card-horizontal">
-                   <!--  <div class="img-wrapper">
-                        <img style="width:600px;height:500px; margin:20px;" th:src="@{'data:image/jpeg;base64,' + ${houseDetails.housePhoto}}" alt="" />
-                    </div> -->
+                    <div class="img-wrapper">
+                        <img style="width:600px;height:500px; margin:20px;" th:src="@{'data:image/jpeg;base64,' + ${house.housePhoto}}" alt="" />
+                    </div> 
                     <div class="card-body">
                         <h4 class="card-title">
                          Name:
@@ -129,6 +131,7 @@
 	  			Delete House
 			 </button>
 		   </form>
+		  
                 </div>
             </div>
 
